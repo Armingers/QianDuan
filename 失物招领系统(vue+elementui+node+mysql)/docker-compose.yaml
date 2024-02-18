@@ -1,0 +1,22 @@
+version: '3.7'
+
+services:
+
+  lost_found_system:
+    build:
+      context: .
+    volumes:
+      - react_build:/react/build
+
+  nginx:
+    image: nginx:latest
+    ports:
+      - 80:80
+    volumes:
+      - ./nginx/default.conf:/etc/nginx/conf.d/default.conf:ro
+      - ./nginx/dataset.conf:/etc/nginx/conf.d/dataset.conf:ro
+      - react_build:/var/www/react
+    depends_on:
+      - lost_found_system
+volumes:
+  react_build:
